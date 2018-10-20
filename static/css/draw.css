@@ -1,0 +1,15 @@
+#content{
+    margin:  0;
+    padding: 0;
+    background-color: darkgray;
+}
+
+#content{
+    width: 100%;
+    margin: 10px 0 5px;
+}
+#canvas{
+    display: block;
+    /*background-color: antiquewhite;*/
+    margin: auto;
+}
