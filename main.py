@@ -3,8 +3,10 @@
 from bottle import route, get, post, run, HTTPResponse, request, static_file
 from bottle import template, redirect
 import json
+from nn_model import predict_onm
 from datetime import datetime
-
+import csv
+import random
 
 @route('/', method='GET')
 def index():
@@ -38,7 +40,17 @@ def upload_image():
 
 @get('/onoma/:name')
 def get_image(name):
-    return template('draw', name=name)
+    onm = predict_onm(name)
+    dic_type = {"drop": "0", "flow": "1", "rain": "2", "soil": "3", "wave": "4", "wind": "5"}
+    word_list = []
+    onm_type = dic_type[onm]
+    with open('word.csv', 'r', encoding="utf8") as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if line[0] == onm_type:
+                word_list.append(line[1])
+    onm = random.choice(word_list)
+    return template('draw', name=name, onm=onm)
 
 
 @route('/static/<file_path:path>')

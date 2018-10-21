@@ -32,7 +32,7 @@
 
     #output img {
         display: block;
-        width: 50%;
+        width: 300px;
         margin: 15px auto;
     }
 
@@ -59,8 +59,8 @@
                 <p class="drag-drop-info">ここにファイルをドロップ</p>
                 <p>または</p>
                 <div class="custom-file">
-                    <input name="upload" type="file" class="custom-file-input" id="validatedCustomFile"  value="upload" required>
-                    <label id="custom-file-label" class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                    <input id="custom-file-input" name="upload" type="file" class="custom-file-input" accept="image/*" required/>
+                    <label id="custom-file-label" class="custom-file-label" for="custom-file-input">Choose file...</label>
                     <div class="invalid-feedback">Example invalid custom file feedback</div>
                 </div>
                 <input type="submit" value="送信">
@@ -68,7 +68,27 @@
         </div>
     </form>
 
-    <script type="text/javascript">
+    <script>
+        $('#custom-file-input').change(function(){
+            if (this.files.length > 0) {
+                // 選択されたファイル情報を取得
+                let file = this.files[0];
+
+                // readerのresultプロパティに、データURLとしてエンコードされたファイルデータを格納
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+
+                reader.onload = function() {
+                    document.getElementById("output").textContent = null;
+                    let img = document.createElement('img');
+                    img.setAttribute('src', reader.result);
+                    document.getElementById("output").appendChild(img);
+                    document.getElementById("custom-file-label").innerText = file.name;
+                }
+            }
+        });
+
+
         document.addEventListener('DOMContentLoaded', function () {
             let dropArea = document.getElementById('drag-drop-area'),
                 output = document.getElementById('output'),
@@ -78,22 +98,25 @@
 
             // ドロップされたファイルの整理
             function organizeFiles(files) {
-                let length = files.length,i = 0, file;
+                let length = files.length,
+                    i = 0, file;
+
 
                 // file には Fileオブジェクト というローカルのファイル情報を含むオブジェクトが入る
                 file = files[0];
+
 
                 // 画像以外は無視
                 if (!file || file.type.indexOf('image/') < 0) {
                     return;
                 }
-
                 // 指定したサイズを超える画像は無視
                 if (file.size > maxSize) {
                     return;
                 }
 
                 document.getElementById("custom-file-label").innerText = files[0].name;
+                document.getElementById("custom-file-input").files = files;
                 // 画像出力処理へ進む
                 outputImage(file);
             }
@@ -117,6 +140,7 @@
                     URL.revokeObjectURL(blobURL);
 
                     // #output へ出力
+                    output.textContent = null;
                     output.appendChild(image);
                 });
             }
@@ -144,12 +168,12 @@
                 output.textContent = '';
 
                 // ev.dataTransfer.files に複数のファイルのリストが入っている
+
                 organizeFiles(ev.dataTransfer.files);
             });
         });
     </script>
-
-</div><!-- /container -->
-
+</div>
+<!-- /container -->
 </body>
 </html>

@@ -1,5 +1,6 @@
 .DS_Store
 *~
 *.swp
-
+/__pycache__/
 /static/img/*
+!/static/img/.gitkeep
