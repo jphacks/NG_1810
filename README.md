@@ -1,5 +1,6 @@
 # おノマとペーパー
-[![おノマとペーパー](image.png)](https://youtu.be/YpN9HAPWaxQ)
+## 動画URL
+[![おノマとペーパー]](https://youtu.be/YpN9HAPWaxQ)
 ## 製品概要
 
 ### オノマトペ Tech
