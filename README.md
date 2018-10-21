@@ -1,5 +1,5 @@
 # おノマとペーパー
-
+[![おノマとペーパー](image.png)](https://youtu.be/YpN9HAPWaxQ)
 ## 製品概要
 
 ### オノマトペ Tech
